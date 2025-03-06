@@ -1,13 +1,19 @@
-const { rejects } = require("assert");
+// const { rejects } = require("assert");
 const net = require("net");
 const { resolve } = require("path");
 const readLine = require("readline/promises");
+
+const PORT = 4000;
+//const HOST = "3.110.218.75";
+// const HOST = "13.233.251.235";
+const HOST = "13.201.128.224";
 
 const rl = readLine.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
+//dir means direction
 const clearLine = (dir) => {
   return new Promise((resolve, rejects) => {
     process.stdout.clearLine(dir, () => {
@@ -16,6 +22,7 @@ const clearLine = (dir) => {
   });
 };
 
+//dir means direction
 const moveCursor = (dx, dy) => {
   return new Promise((resolve, rejects) => {
     process.stdout.moveCursor(dx, dy, () => {
@@ -27,48 +34,53 @@ const moveCursor = (dx, dy) => {
 let id;
 
 //create client/socket
-const socket = net.createConnection(
-  { host: "127.0.0.1", port: 4000 },
-  async () => {
-    console.log(`Connected to server!`);
+const socket = net.createConnection({ host: HOST, port: PORT }, async () => {
+  console.log(`Connected to server!`);
 
-    const ask = async () => {
-      const message = await rl.question(`Enter the message > `);
-      // move the cursor one line up
-      await moveCursor(0, -1);
-      //clear the current line that the cursor is in
-      await clearLine(0);
+  //'connect' listener.
+  //console.log("connected to server!");
+  //ask function to ask quesuion call this everytime after user
+  //input ends
+  const ask = async () => {
+    const message = await rl.question(`Enter the message > `);
+    // move the cursor one line up
+    await moveCursor(0, -1);
+    //clear the current line that the cursor is in
+    await clearLine(0);
 
-      socket.write(`${id}-message-${message}`);
-    };
+    socket.write(`${id}-message-${message}`);
+  };
+
+  ask();
+
+  //while we get data from user we first move the cursor to the above line
+  //then we clear that line and put that message there
+  //then the ask() function ask to enter the message
+  socket.on("data", async (data) => {
+    //when we are getting the message (data)
+    // log an empty line
+    console.log();
+    // move the cursor one line up
+    await moveCursor(0, -1);
+    // clear that line that the cursor just moved into
+    await clearLine(0);
+
+    if (data.toString("utf-8").substring(0, 2) === "id") {
+      //When we are getting the id...
+
+      //everything from the third character up until the end
+      id = data.toString("utf-8").substring(3);
+
+      console.log(`Your id is ${id}!\n`);
+    } else {
+      //When we are getting the message...
+
+      console.log(data.toString("utf-8"));
+    }
 
     ask();
-
-    socket.on("data", async (data) => {
-      // log an empty line
-      console.log();
-      // move the cursor one line up
-      await moveCursor(0, -1);
-      // clear that line that the cursor just moved into
-      await clearLine(0);
-
-      if (data.toString("utf-8").substring(0, 2) === "id") {
-        //When we are getting the id...
-
-        //everything from the third character up until the end
-        id = data.toString("utf-8").substring(3);
-
-        console.log(`Your id is ${id}!\n`);
-      } else {
-        //When we are getting the message...
-
-        console.log(data.toString("utf-8"));
-      }
-
-      ask();
-    });
-  }
-);
+  });
+});
 
 socket.on("end", () => {
   console.log(`Connection was ended so siging off`);

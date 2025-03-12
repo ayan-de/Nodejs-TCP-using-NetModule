@@ -33,6 +33,9 @@ server.on("connection", (socket) => {
 
   socket.write(`id-${clientId}`);
 
+  //here we actually gets data from client to server
+  //and data event gets triggered
+  //"2-message-the message here"
   socket.on("data", (data) => {
     //convert data from client to string
     const dataString = data.toString("utf-8");

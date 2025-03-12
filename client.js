@@ -6,7 +6,8 @@ const readLine = require("readline/promises");
 const PORT = 4000;
 //const HOST = "3.110.218.75";
 // const HOST = "13.233.251.235";
-const HOST = "13.201.128.224";
+// const HOST = "13.201.128.224";
+const HOST = "127.0.0.1";
 
 const rl = readLine.createInterface({
   input: process.stdin,
@@ -36,6 +37,17 @@ let id;
 //create client/socket
 const socket = net.createConnection({ host: HOST, port: PORT }, async () => {
   console.log(`Connected to server!`);
+
+  console.log(`
+    _____                             _        __  __       _ _ 
+   | ____|_ __   ___ _ __ _   _ _ __ | |_ ___ |  \\/  | __ _(_) |
+   |  _| | '_ \\ / __| '__| | | | '_ \\| __/ _ \\| |\\/| |/ _\` | | |
+   | |___| | | | (__| |  | |_| | |_) | || (_) | |  | | (_| | | |
+   |_____|_| |_|\\___|_|   \\__, | .__/ \\__\\___/|_|  |_|\\__,_|_|_|
+                          |___/|_|                               
+
+          End-to-End Encrypted Backup E-mailing Service!
+  `);
 
   //'connect' listener.
   //console.log("connected to server!");

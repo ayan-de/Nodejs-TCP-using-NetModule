@@ -1,8 +1,9 @@
 const net = require("net");
 
 const PORT = 4000;
-const HOST = "172.31.4.28";
+// const HOST = "172.31.4.28";
 
+const HOST = "127.0.0.1";
 //create server
 //one such socket object for every client
 const server = net.createServer();

@@ -1,7 +1,10 @@
 // const { rejects } = require("assert");
-const net = require("net");
-const { resolve } = require("path");
-const readLine = require("readline/promises");
+// const net = require("net");
+// const { resolve } = require("path");
+// const readLine = require("readline/promises");
+
+import net from "net";
+import readLine from "readline/promises";
 
 const PORT = 4000;
 //const HOST = "3.110.218.75";
@@ -59,7 +62,8 @@ const socket = net.createConnection({ host: HOST, port: PORT }, async () => {
     await moveCursor(0, -1);
     //clear the current line that the cursor is in
     await clearLine(0);
-
+    //from client to server the message is tranfering in the form
+    //"2-message-the message here"
     socket.write(`${id}-message-${message}`);
   };
 

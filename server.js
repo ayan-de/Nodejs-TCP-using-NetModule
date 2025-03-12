@@ -1,4 +1,5 @@
-const net = require("net");
+// const net = require("net");
+import net from "net";
 
 const PORT = 4000;
 // const HOST = "172.31.4.28";

@@ -37,20 +37,21 @@ const moveCursor = (dx, dy) => {
 
 let id;
 
+console.log(`
+  _____                             _        __  __       _ _ 
+ | ____|_ __   ___ _ __ _   _ _ __ | |_ ___ |  \\/  | __ _(_) |
+ |  _| | '_ \\ / __| '__| | | | '_ \\| __/ _ \\| |\\/| |/ _\` | | |
+ | |___| | | | (__| |  | |_| | |_) | || (_) | |  | | (_| | | |
+ |_____|_| |_|\\___|_|   \\__, | .__/ \\__\\___/|_|  |_|\\__,_|_|_|
+                        |___/|_|                               
+
+        End-to-End Encrypted Backup E-mailing Service!
+`);
+
+// export function connectToServer() {
 //create client/socket
 const socket = net.createConnection({ host: HOST, port: PORT }, async () => {
   console.log(`Connected to server!`);
-
-  console.log(`
-    _____                             _        __  __       _ _ 
-   | ____|_ __   ___ _ __ _   _ _ __ | |_ ___ |  \\/  | __ _(_) |
-   |  _| | '_ \\ / __| '__| | | | '_ \\| __/ _ \\| |\\/| |/ _\` | | |
-   | |___| | | | (__| |  | |_| | |_) | || (_) | |  | | (_| | | |
-   |_____|_| |_|\\___|_|   \\__, | .__/ \\__\\___/|_|  |_|\\__,_|_|_|
-                          |___/|_|                               
-
-          End-to-End Encrypted Backup E-mailing Service!
-  `);
 
   //'connect' listener.
   //console.log("connected to server!");
@@ -88,6 +89,8 @@ const socket = net.createConnection({ host: HOST, port: PORT }, async () => {
       id = data.toString("utf-8").substring(3);
 
       console.log(`Your id is ${id}!\n`);
+    } else if (data.toString("utf-8").substring(10) === "exit") {
+      socket.end();
     } else {
       //When we are getting the message...
 
@@ -101,3 +104,5 @@ const socket = net.createConnection({ host: HOST, port: PORT }, async () => {
 socket.on("end", () => {
   console.log(`Connection was ended so siging off`);
 });
+// }
+connectToServer();
